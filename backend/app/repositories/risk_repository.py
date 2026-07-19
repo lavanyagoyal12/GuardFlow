@@ -45,3 +45,40 @@ class RiskRepository:
             .limit(1)
         )
         return self.db.execute(stmt).scalar_one_or_none()
+
+    def get_latest(self) -> Optional[RiskAssessment]:
+        """Retrieve the most recent risk assessment across all sessions.
+
+        Used by the Arduino/GuardFlow hardware integration, which has no
+        session_id of its own and just wants "whatever the newest verdict
+        is right now".
+
+        Returns:
+            The single newest RiskAssessment row, or None if the table is empty
+        """
+        stmt = select(RiskAssessment).order_by(RiskAssessment.created_at.desc()).limit(1)
+        return self.db.execute(stmt).scalar_one_or_none()
+
+    def get_by_id(self, assessment_id: str) -> Optional[RiskAssessment]:
+        """Retrieve a single risk assessment by its primary key."""
+        return self.db.get(RiskAssessment, assessment_id)
+
+    def set_physical_confirmation_result(
+        self, assessment_id: str, result: str
+    ) -> Optional[RiskAssessment]:
+        """Record the outcome of a physical NFC confirmation for an assessment.
+
+        Args:
+            assessment_id: Primary key of the RiskAssessment to update
+            result: "AUTHORIZED" or "DENIED"
+
+        Returns:
+            The updated RiskAssessment, or None if no row with that id exists
+        """
+        assessment = self.get_by_id(assessment_id)
+        if assessment is None:
+            return None
+        assessment.physical_confirmation_result = result
+        self.db.commit()
+        self.db.refresh(assessment)
+        return assessment

@@ -25,7 +25,7 @@ def _persist_page_analysis(data: dict) -> None:
     """
     session_id = data.get("session_id")
     if not session_id:
-        logger.warning(f"PAGE_ANALYSIS message missing session_id: {data}")
+        logger.warning("PAGE_ANALYSIS message missing session_id")
         return
 
     event = Event(
@@ -77,7 +77,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # Signals extracted by the extension for a previously-requested
             # ANALYZE_URL. Persisted as an event and consumed by
-            # _extract_page_analysis_risk() in app/api/risk.py.
+            # the deterministic scoring pipeline in app/api/risk.py.
             if message_type == "PAGE_ANALYSIS":
                 _persist_page_analysis(data)
                 continue

@@ -69,6 +69,3 @@ GuardFlow/
 
 `AUTHORIZED` or `DENIED`, sent once after a card is tapped while the
 board is in `WAITING_FOR_NFC`.
-
-
-

@@ -37,6 +37,11 @@ class RiskAssessment(Base):
     confidence: Mapped[float]
     triggered_rules: Mapped[list[str]] = mapped_column(JSON)
     requires_physical_confirmation: Mapped[bool] = mapped_column(default=False)
+    # Set once the physical NFC check (via the Arduino/GuardFlow hardware)
+    # resolves for a HIGH/CRITICAL assessment. None until then.
+    physical_confirmation_result: Mapped[str | None] = mapped_column(
+        String(20), nullable=True, default=None
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),

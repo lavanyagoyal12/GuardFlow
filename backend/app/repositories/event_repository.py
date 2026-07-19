@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 
 from sqlalchemy.exc import IntegrityError
@@ -52,7 +52,12 @@ class EventRepository:
         Returns:
             List of Event objects matching the session
         """
-        return self.db.query(Event).filter(Event.session_id == session_id).all()
+        return (
+            self.db.query(Event)
+            .filter(Event.session_id == session_id)
+            .order_by(Event.timestamp.asc(), Event.created_at.asc())
+            .all()
+        )
 
     def delete(self, event_id: UUID) -> None:
         """Remove an event from database.
