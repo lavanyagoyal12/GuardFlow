@@ -1,0 +1,5 @@
+name: GuardFlow
+description: "AI-powered fraud detection system - relays risk verdicts from an external AI backend to LEDs, servo lock, LED matrix and NFC hardware on the Arduino UNO Q."
+ports: []
+bricks: []
+icon: 🛡️

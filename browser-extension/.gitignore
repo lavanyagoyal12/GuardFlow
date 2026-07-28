@@ -1,0 +1,16 @@
+# OS junk files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# Dependency directories (if any tooling is added later)
+node_modules/
+
+# Build artifacts
+*.zip
+dist/
